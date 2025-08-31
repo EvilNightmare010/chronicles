@@ -5,7 +5,7 @@ enum TokenType {
   // Palabras clave
   var_, fun, class_, if_, elif_, else_, while_, return_, print_,
   // Tipos
-  number_, string_, bool_, null_, object_, function_,
+  number_, string_, bool_, nullType_, object_, function_,
   // Símbolos
   lparen, rparen, lbrace, rbrace, colon, comma, dot, arrow, assign,
   // Operadores
