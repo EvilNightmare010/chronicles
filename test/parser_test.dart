@@ -2,7 +2,6 @@
 
 import 'package:test/test.dart';
 import '../lib/src/scanner.dart';
-import '../lib/src/token.dart';
 import '../lib/src/parser.dart';
 import '../lib/src/ast.dart';
 

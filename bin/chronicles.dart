@@ -7,7 +7,6 @@ import '../lib/src/repl.dart';
 import '../lib/src/interpreter.dart';
 import '../lib/src/scanner.dart';
 import '../lib/src/parser.dart';
-import '../lib/src/io_sink.dart';
 
 void main(List<String> arguments) {
   // Configuración de argumentos CLI

@@ -2,9 +2,6 @@ name: chronicles_lang
 description: Un lenguaje de programación moderno inspirado en Python y Java, implementado en Dart.
 version: 0.1.0
 homepage: https://github.com/EvilNightmare010/chronicles.git
-authors:
-  - Juan José Ramírez Pulgarín
-  - Lucas Henao Fernández
 environment:
   sdk: '>=3.0.0 <4.0.0'
 dependencies:

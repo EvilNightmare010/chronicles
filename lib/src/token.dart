@@ -11,7 +11,7 @@ enum TokenType {
   // Operadores
   plus, minus, star, slash, percent, eq, neq, lt, gt, le, ge,
   // Literales
-  identifier, number, string, bool, null,
+  identifier, number, string, bool, null_,
   // Indentación
   indent, dedent, newline,
   // Comentario

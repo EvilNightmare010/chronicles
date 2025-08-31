@@ -204,7 +204,7 @@ class Parser {
   }
 
   AstNode _unary() {
-    if (_match([TokenType.minus, TokenType.not])) {
+    if (_match([TokenType.minus, TokenType.neq])) { // Solo operadores válidos
       final op = _previous().lexeme;
       final expr = _unary();
       return Unary(op, expr);

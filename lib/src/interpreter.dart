@@ -3,7 +3,6 @@
 import 'ast.dart';
 import 'environment.dart';
 import 'value.dart';
-import 'builtins.dart';
 
 /// Intérprete principal para Chronicles
 class Interpreter implements AstVisitor<Value> {
