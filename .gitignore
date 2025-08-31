@@ -1,0 +1,10 @@
+.dart_tool/
+.packages
+build/
+.idea/
+*.log
+*.lock
+*.iml
+*.swp
+.DS_Store
+.env
