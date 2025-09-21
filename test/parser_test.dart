@@ -1,26 +1,26 @@
 // Pruebas unitarias para el parser de Chronicles
 
-import 'package:test/test.dart';
-import '../lib/src/scanner.dart';
-import '../lib/src/parser.dart';
-import '../lib/src/ast.dart';
+import 'package:test/test.dart'; // Framework test
+import '../lib/src/lexer.dart'; // Lexer
+import '../lib/src/parser.dart'; // Parser
+import '../lib/src/ast.dart'; // Definiciones AST
 
-void main() {
-  test('Parsea declaración de variable', () {
-    final code = 'var x = 42\n';
-    final scanner = Scanner(code, '<test>');
-    final tokens = scanner.scanTokens();
-    final parser = Parser(tokens);
-    final ast = parser.parse();
-    expect(ast.statements.first, isA<VarDecl>());
-  });
+void main() { // Entrada pruebas
+  test('Parsea declaración de variable', () { // Caso var
+    final code = 'var x = 42\n'; // Fuente
+  final lexer = Lexer(code, '<test>'); // Lexer
+  final tokens = lexer.scanTokens(); // Tokens
+    final parser = Parser(tokens); // Parser
+    final ast = parser.parse(); // AST
+    expect(ast.statements.first, isA<VarDecl>()); // Es VarDecl
+  }); // Fin test var
 
-  test('Parsea función simple', () {
-    final code = 'fun suma(a, b):\n    return a + b\n';
-    final scanner = Scanner(code, '<test>');
-    final tokens = scanner.scanTokens();
-    final parser = Parser(tokens);
-    final ast = parser.parse();
-    expect(ast.statements.first, isA<FunDecl>());
+  test('Parsea función simple', () { // Caso función
+    final code = 'fun suma(a, b):\n    return a + b\n'; // Fuente
+  final lexer = Lexer(code, '<test>'); // Lexer
+  final tokens = lexer.scanTokens(); // Tokens
+    final parser = Parser(tokens); // Parser
+    final ast = parser.parse(); // AST
+    expect(ast.statements.first, isA<FunDecl>()); // Es FunDecl
   });
 }

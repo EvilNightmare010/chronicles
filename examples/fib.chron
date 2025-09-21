@@ -1,7 +1,7 @@
-# fib.chron
-def fib(n):
-    if n <= 1:
-        return n
-    else:
-        return fib(n-1) + fib(n-2)
-print(fib(10))
+# fib.chron - Serie de Fibonacci recursiva (sintaxis Chronicles)
+fun fib(n): # Define función fib
+    if n <= 1: # Caso base 0 o 1
+        return n # Retorna n
+    else: # Caso recursivo
+        return fib(n - 1) + fib(n - 2) # fib(n-1)+fib(n-2)
+print(fib(10)) # Imprime fib(10)

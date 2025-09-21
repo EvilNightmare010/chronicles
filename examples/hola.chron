@@ -1,2 +1,2 @@
-# hola.chron
-print("¡Hola, Chronicles!")
+# hola.chron - Ejemplo mínimo de salida
+print("¡Hola, Chronicles!") # Imprime saludo básico

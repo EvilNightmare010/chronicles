@@ -1,8 +1,8 @@
-# class_sample.chron
-class Persona:
-    def __init__(self, nombre):
-        self.nombre = nombre
-    def saludar(self):
-        print("Hola, soy", self.nombre)
-p = Persona("Juan")
-p.saludar()
+# class_sample.chron - Ejemplo de clase y método usando sintaxis Chronicles
+class Persona: # Define clase Persona
+    fun __init__(nombre): # Constructor con parámetro (this implícito disponible)
+        this.nombre = nombre # Asigna atributo nombre
+    fun saludar(): # Método saludar sin parámetros extra
+        print("Hola, soy", this.nombre) # Imprime saludo accediendo a this
+var p = Persona("Juan") # Crea instancia de Persona
+p.saludar() # Invoca método saludar

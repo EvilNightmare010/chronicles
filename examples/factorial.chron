@@ -1,7 +1,7 @@
-# factorial.chron
-def fact(n):
-    if n <= 1:
-        return 1
-    else:
-        return n * fact(n-1)
-print(fact(5))
+# factorial.chron - Cálculo recursivo del factorial (sintaxis Chronicles)
+fun fact(n): # Define función factorial
+    if n <= 1: # Caso base n<=1
+        return 1 # Retorna 1
+    else: # Caso recursivo
+        return n * fact(n - 1) # n * fact(n-1)
+print(fact(5)) # Imprime factorial de 5

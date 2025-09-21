@@ -1,54 +1,72 @@
 // Representación de funciones, objetos y tipos nativos para Chronicles
 
 /// Valor base para el intérprete
-abstract class Value {}
+abstract class Value {} // Define jerarquía de valores
 
-/// Valor nulo
-class NullValue extends Value {
-  @override
-  String toString() => 'null';
+/// Valor nulo // Representa null
+class NullValue extends Value { // Clase NullValue
+  @override // Sobrescribe toString
+  String toString() => 'null'; // Devuelve representación textual
 }
 
-/// Valor numérico
-class NumberValue extends Value {
-  final double value;
-  NumberValue(this.value);
-  @override
-  String toString() => value.toString();
+/// Valor numérico // Números de punto flotante
+class NumberValue extends Value { // Clase NumberValue
+  final double value; // Almacena número
+  NumberValue(this.value); // Constructor
+  @override // toString
+  String toString() => value.toString(); // Texto del número
 }
 
-/// Valor cadena
-class StringValue extends Value {
-  final String value;
-  StringValue(this.value);
-  @override
-  String toString() => '"$value"';
+/// Valor cadena // Strings
+class StringValue extends Value { // Clase StringValue
+  final String value; // Texto interno
+  StringValue(this.value); // Constructor
+  @override // toString
+  String toString() => '"$value"'; // Representación con comillas
 }
 
-/// Valor booleano
-class BoolValue extends Value {
-  final bool value;
-  BoolValue(this.value);
-  @override
-  String toString() => value ? 'true' : 'false';
+/// Valor booleano // Booleans
+class BoolValue extends Value { // Clase BoolValue
+  final bool value; // Valor bool
+  BoolValue(this.value); // Constructor
+  @override // toString
+  String toString() => value ? 'true' : 'false'; // Texto booleano
 }
 
-/// Valor función
-class FunctionValue extends Value {
-  final String name;
-  final List<String> params;
+/// Valor función // Funciones nativas o de usuario
+class FunctionValue extends Value { // Clase FunctionValue
+  final String name; // Nombre de función
+  final List<String> params; // Parámetros
   final dynamic body; // Puede ser AstNode o función nativa
-  final bool isNative;
-  FunctionValue(this.name, this.params, this.body, {this.isNative = false});
-  @override
-  String toString() => '<fun $name>';
+  final bool isNative; // Marca nativa
+  FunctionValue(this.name, this.params, this.body, {this.isNative = false}); // Constructor
+  @override // toString
+  String toString() => '<fun $name>'; // Representación simbólica
 }
 
-/// Valor objeto
-class ObjectValue extends Value {
-  final String className;
-  final Map<String, Value> fields = {};
-  ObjectValue(this.className);
-  @override
-  String toString() => '<object $className>';
+/// Valor objeto // Instancias de clases (futuro)
+class ObjectValue extends Value { // Clase ObjectValue
+  final String className; // Nombre de clase
+  final Map<String, Value> fields = {}; // Campos dinámicos
+  ObjectValue(this.className); // Constructor
+  @override // toString
+  String toString() => '<object $className>'; // Texto simbólico
+}
+
+/// Valor clase // Representa definición de clase
+class ClassValue extends Value { // Clase ClassValue
+  final String name; // Nombre de clase
+  final Map<String, FunctionValue> methods; // Métodos
+  ClassValue(this.name, this.methods); // Constructor
+  @override // toString
+  String toString() => '<class $name>'; // Texto
+}
+
+/// Método ligado a instancia // Para this
+class BoundMethod extends Value { // Clase BoundMethod
+  final ObjectValue instance; // Instancia
+  final FunctionValue method; // Método
+  BoundMethod(this.instance, this.method); // Constructor
+  @override // toString
+  String toString() => '<bound ${method.name}>'; // Texto
 }
