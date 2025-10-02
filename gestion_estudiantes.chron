@@ -1,0 +1,74 @@
+# gestion_estudiantes.chron - Sistema de gestión de estudiantes
+# Ejemplo avanzado de programación en Chronicles
+
+class Estudiante:
+    fun __init__(nombre, edad, carrera):
+        this.nombre = nombre
+        this.edad = edad
+        this.carrera = carrera
+        this.notas = 0
+        this.materias_cursadas = 0
+    
+    fun agregar_nota(nota):
+        this.notas = this.notas + nota
+        this.materias_cursadas = this.materias_cursadas + 1
+    
+    fun calcular_promedio():
+        if this.materias_cursadas > 0:
+            return this.notas / this.materias_cursadas
+        else:
+            return 0
+    
+    fun mostrar_info():
+        print("=== Información del Estudiante ===")
+        print("Nombre:", this.nombre)
+        print("Edad:", this.edad)
+        print("Carrera:", this.carrera)
+        print("Materias cursadas:", this.materias_cursadas)
+        var promedio = this.calcular_promedio()
+        print("Promedio:", promedio)
+
+# Función auxiliar
+fun evaluar_rendimiento(promedio):
+    if promedio >= 4.5:
+        return "Excelente"
+    else:
+        if promedio >= 3.5:
+            return "Bueno"
+        else:
+            return "Necesita mejorar"
+
+# Programa principal
+print("🎓 Sistema de Gestión de Estudiantes")
+print("====================================")
+
+# Creando estudiantes
+var estudiante1 = Estudiante("Ana García", 20, "Ingeniería de Sistemas")
+var estudiante2 = Estudiante("Carlos López", 22, "Administración")
+
+# Agregando notas al primer estudiante
+estudiante1.agregar_nota(4.8)
+estudiante1.agregar_nota(4.2)
+estudiante1.agregar_nota(4.6)
+estudiante1.agregar_nota(4.9)
+
+# Agregando notas al segundo estudiante
+estudiante2.agregar_nota(3.8)
+estudiante2.agregar_nota(3.2)
+estudiante2.agregar_nota(3.9)
+
+# Mostrando información
+estudiante1.mostrar_info()
+var promedio1 = estudiante1.calcular_promedio()
+var rendimiento1 = evaluar_rendimiento(promedio1)
+print("Rendimiento:", rendimiento1)
+
+print("")
+
+estudiante2.mostrar_info()
+var promedio2 = estudiante2.calcular_promedio()
+var rendimiento2 = evaluar_rendimiento(promedio2)
+print("Rendimiento:", rendimiento2)
+
+print("")
+print("🏆 Reporte finalizado")

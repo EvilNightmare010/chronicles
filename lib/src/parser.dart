@@ -52,7 +52,7 @@ class Parser { // Clase Parser
     }
     _consume(TokenType.assign, 'Se esperaba "=".'); // Consume =
     final initializer = _expression(); // Expresión inicializadora
-    _consume(TokenType.newline, 'Se esperaba salto de línea.'); // Fin de línea
+    _consumeNewlineSkippingComments(); // Fin de línea con comentarios
     return VarDecl(name, type, initializer); // Nodo VarDecl
   }
 
@@ -71,7 +71,7 @@ class Parser { // Clase Parser
       _expression(); // Ignora expresión (tipo) por ahora
     }
     _consume(TokenType.colon, 'Se esperaba ":".'); // :
-    _consume(TokenType.newline, 'Se esperaba salto de línea.'); // Fin cabecera
+    _consumeNewlineSkippingComments(); // Fin cabecera con comentarios
     final body = _block(); // Bloque cuerpo
     return FunDecl(name, params, body); // Nodo FunDecl
   }
@@ -80,7 +80,7 @@ class Parser { // Clase Parser
   ClassDecl _classDecl() { // Método clase
     final name = _consume(TokenType.identifier, 'Se esperaba nombre de clase.').lexeme; // Nombre clase
     _consume(TokenType.colon, 'Se esperaba ":".'); // :
-    _consume(TokenType.newline, 'Se esperaba salto de línea.'); // Fin cabecera
+    _consumeNewlineSkippingComments(); // Fin cabecera con comentarios
     final methods = <FunDecl>[]; // Lista métodos
     while (_check(TokenType.indent)) { // Mientras indent
       _advance(); // Consume indent
@@ -102,7 +102,6 @@ class Parser { // Clase Parser
     if (_match([TokenType.while_])) return _whileStmt(); // while
     if (_match([TokenType.for_])) return _forStmt(); // for
     if (_match([TokenType.return_])) return _returnStmt(); // return
-    if (_match([TokenType.print_])) return _printStmt(); // print
     return _exprStmt(); // Expresión por defecto
   }
 
@@ -112,7 +111,7 @@ class Parser { // Clase Parser
     _consume(TokenType.in_, 'Se esperaba palabra clave "in".'); // in
     final iterable = _expression(); // Expresión iterable
     _consume(TokenType.colon, 'Se esperaba ":".'); // :
-    _consume(TokenType.newline, 'Se esperaba salto de línea.'); // Fin cabecera
+    _consumeNewlineSkippingComments(); // Fin cabecera con comentarios
     final body = _block(); // Bloque cuerpo
     return ForStmt(iterator, iterable, body); // Nodo ForStmt
   }
@@ -121,12 +120,12 @@ class Parser { // Clase Parser
   IfStmt _ifStmt() { // Método if
     final condition = _expression(); // Condición
     _consume(TokenType.colon, 'Se esperaba ":".'); // :
-    _consume(TokenType.newline, 'Se esperaba salto de línea.'); // Fin línea
+    _consumeNewlineSkippingComments(); // Fin línea con comentarios
     final thenBranch = _block(); // Rama then
     AstNode? elseBranch; // Posible else
     if (_match([TokenType.elif_, TokenType.else_])) { // elif/else
       _consume(TokenType.colon, 'Se esperaba ":".'); // :
-      _consume(TokenType.newline, 'Se esperaba salto de línea.'); // Fin línea
+      _consumeNewlineSkippingComments(); // Fin línea con comentarios
       elseBranch = _block(); // Rama alternativa
     }
     return IfStmt(condition, thenBranch, elseBranch); // Nodo IfStmt
@@ -136,7 +135,7 @@ class Parser { // Clase Parser
   WhileStmt _whileStmt() { // Método while
     final condition = _expression(); // Condición
     _consume(TokenType.colon, 'Se esperaba ":".'); // :
-    _consume(TokenType.newline, 'Se esperaba salto de línea.'); // Fin línea
+    _consumeNewlineSkippingComments(); // Fin línea con comentarios
     final body = _block(); // Cuerpo
     return WhileStmt(condition, body); // Nodo WhileStmt
   }
@@ -147,15 +146,8 @@ class Parser { // Clase Parser
     if (!_check(TokenType.newline)) { // Si no newline
       value = _expression(); // Expresión valor
     }
-    _consume(TokenType.newline, 'Se esperaba salto de línea.'); // Consume newline
+    _consumeNewlineSkippingComments(); // Consume newline con comentarios
     return ReturnStmt(value); // Nodo ReturnStmt
-  }
-
-  // Sentencia print // print expr\n
-  ExprStmt _printStmt() { // Método print
-    final expr = _expression(); // Expresión a imprimir
-    _consume(TokenType.newline, 'Se esperaba salto de línea.'); // Fin línea
-    return ExprStmt(expr); // Nodo ExprStmt
   }
 
   // Sentencia de expresión // expr\n
@@ -272,21 +264,22 @@ class Parser { // Clase Parser
 
   AstNode _call() { // Llamadas // Producción call
     var expr = _primary(); // Expresión base
-    while (_match([TokenType.lparen])) { // Mientras (
-      final args = <AstNode>[]; // Lista argumentos
-      if (!_check(TokenType.rparen)) { // Si no cierra
-        do { // Recoge argumentos
-          args.add(_expression()); // Arg
-        } while (_match([TokenType.comma])); // Comas
+    while (true) { // Bucle infinito para procesar llamadas y accesos
+      if (_match([TokenType.lparen])) { // Si hay (
+        final args = <AstNode>[]; // Lista argumentos
+        if (!_check(TokenType.rparen)) { // Si no cierra
+          do { // Recoge argumentos
+            args.add(_expression()); // Arg
+          } while (_match([TokenType.comma])); // Comas
+        }
+        _consume(TokenType.rparen, 'Se esperaba ")".'); // )
+        expr = Call(expr, args); // Nodo llamada
+      } else if (_match([TokenType.dot])) { // Si hay .
+        final name = _consume(TokenType.identifier, 'Se esperaba nombre de propiedad.').lexeme; // Nombre prop
+        expr = Get(expr, name); // Nodo Get
+      } else {
+        break; // No más llamadas/accesos
       }
-      _consume(TokenType.rparen, 'Se esperaba ")".'); // )
-      expr = Call(expr, args); // Nodo llamada
-      // Después de una llamada puede continuar con accesos por punto
-    }
-    // Encadenar accesos a propiedades con '.'
-    while (_match([TokenType.dot])) { // Mientras punto
-      final name = _consume(TokenType.identifier, 'Se esperaba nombre de propiedad.').lexeme; // Nombre prop
-      expr = Get(expr, name); // Nodo Get
     }
     return expr; // Resultado call
   }
@@ -309,13 +302,8 @@ class Parser { // Clase Parser
     }
     if (_match([TokenType.lparen])) { // (
       final expr = _expression(); // Subexpresión
-      if (_check(TokenType.rparen)) { // ) presente
-        _advance(); // Consumir )
-      } else if (!(_check(TokenType.newline) || _check(TokenType.dedent) || _check(TokenType.eof))) {
-        // Si no estamos ante un delimitador razonable, entonces sí es error
-        _consume(TokenType.rparen, 'Se esperaba ")".');
-      }
-      return expr; // Retorna agrupación (cierre implícito posible)
+      _consume(TokenType.rparen, 'Se esperaba ")".'); // ) obligatorio
+      return expr; // Retorna agrupación
     }
     // Recuperación: si encontramos un ')' aislado lo consumimos y devolvemos null
     if (_check(TokenType.rparen)) { // Paréntesis de cierre inesperado
@@ -357,6 +345,14 @@ class Parser { // Clase Parser
   Token _consume(TokenType type, String message) { // Exige tipo
     if (_check(type)) return _advance(); // Devuelve si coincide
     throw Exception(message); // Lanza error
+  }
+
+  // Consume newline saltando comentarios previos
+  void _consumeNewlineSkippingComments() { // Método auxiliar
+    while (_check(TokenType.comment)) { // Si hay comentario
+      _advance(); // Consume comentario
+    }
+    _consume(TokenType.newline, 'Se esperaba salto de línea.'); // Fin línea
   }
 
   // Salta tokens de ruido: newlines y comentarios encadenados

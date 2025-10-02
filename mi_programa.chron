@@ -1,0 +1,65 @@
+# mi_programa.chron - Mi primer programa en Chronicles
+# Este es un ejemplo completo de programación en Chronicles
+
+# Declarando variables
+var nombre = "Juan José"
+var edad = 21
+var pi = 3.14159
+
+# Función simple
+fun duplicar(numero):
+    return numero * 2
+
+# Función más compleja
+fun calcular_area_circulo(radio):
+    return pi * radio * radio
+
+# Función recursiva
+fun potencia(base, exponente):
+    if exponente <= 0:
+        return 1
+    else:
+        return base * potencia(base, exponente - 1)
+
+# Clase completa
+class Calculadora:
+    fun __init__(nombre_calc):
+        this.nombre = nombre_calc
+        this.operaciones = 0
+    
+    fun sumar(a, b):
+        this.operaciones = this.operaciones + 1
+        return a + b
+    
+    fun mostrar_estadisticas():
+        print("Calculadora:", this.nombre)
+        print("Operaciones realizadas:", this.operaciones)
+
+# Programa principal
+print("=== Mi Programa en Chronicles ===")
+print("Programador:", nombre)
+print("Edad:", edad)
+
+# Usando funciones
+var numero = 15
+var doble = duplicar(numero)
+print("El doble de", numero, "es", doble)
+
+var radio = 5
+var area = calcular_area_circulo(radio)
+print("Área del círculo con radio", radio, "es", area)
+
+var resultado_potencia = potencia(2, 8)
+print("2 elevado a la 8 es:", resultado_potencia)
+
+# Usando clases
+var mi_calc = Calculadora("SuperCalc")
+var suma_result = mi_calc.sumar(25, 17)
+print("25 + 17 =", suma_result)
+
+var otra_suma = mi_calc.sumar(100, 50)
+print("100 + 50 =", otra_suma)
+
+mi_calc.mostrar_estadisticas()
+
+print("=== Fin del programa ===")

@@ -19,6 +19,10 @@ class Lexer { // Clase Lexer
     while (!_isAtEnd()) { // Mientras queden caracteres
       _scanToken(); // Escanea un token
     }
+    // Asegurar que hay un newline antes del EOF si el último token no es newline
+    if (_tokens.isNotEmpty && _tokens.last.type != TokenType.newline) { // Si no termina con newline
+      _tokens.add(Token(TokenType.newline, '\n', _line, _col)); // Agrega newline implícito
+    }
     while (_indentStack.length > 1) { // Limpia indentaciones pendientes
       _tokens.add(Token(TokenType.dedent, '', _line, _col)); // Agrega dedent
       _indentStack.removeLast(); // Quita nivel
@@ -181,7 +185,6 @@ class Lexer { // Clase Lexer
       case 'for': _tokens.add(Token(TokenType.for_, id, _line, _col)); break; // for
       case 'in': _tokens.add(Token(TokenType.in_, id, _line, _col)); break; // in
       case 'return': _tokens.add(Token(TokenType.return_, id, _line, _col)); break; // return
-      case 'print': _tokens.add(Token(TokenType.print_, id, _line, _col)); break; // print
       case 'and': _tokens.add(Token(TokenType.and_, id, _line, _col)); break; // and
       case 'or': _tokens.add(Token(TokenType.or_, id, _line, _col)); break; // or
       case 'number': _tokens.add(Token(TokenType.number_, id, _line, _col)); break; // number kw

@@ -12,6 +12,7 @@ void main() { // Entrada pruebas
     expect(tokens.any((t) => t.type == TokenType.var_), isTrue); // Contiene var
     expect(tokens.any((t) => t.type == TokenType.identifier), isTrue); // Contiene id
     expect(tokens.any((t) => t.type == TokenType.number), isTrue); // Contiene número
-    expect(tokens.any((t) => t.type == TokenType.print_), isTrue); // Contiene print
+    // print ahora es un identificador normal, no una palabra clave especial
+    expect(tokens.where((t) => t.type == TokenType.identifier).length >= 2, isTrue); // Al menos 2 identificadores (x y print)
   });
 }
