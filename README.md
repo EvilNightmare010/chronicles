@@ -64,6 +64,12 @@ REPL interactivo:
 dart run bin/chronicles.dart --repl
 ```
 
+Ayuda y opciones:
+
+```powershell
+dart run bin/chronicles.dart --help
+```
+
 Modo detallado (rastreo interno):
 
 ```powershell
@@ -84,13 +90,26 @@ dart test
 
 - `chronicles <archivo.chron>`: Ejecuta un script.
 - `chronicles --repl`: Inicia el entorno interactivo (multi‑línea).
-- `chronicles -v <archivo>`: Traza pasos (tokens, AST, resultados intermedios) para depuración académica.
+- `chronicles --help`: Muestra ayuda y opciones disponibles.
+- `chronicles --verbose`: Modo detallado para depuración.
 
 Salida de error estandarizada con línea y lexema cuando aplica.
 
 ---
 
 ## 4. Ejemplos esenciales
+
+**Ejemplos incluidos en `examples/`:**
+
+- `hola.chron` - Programa básico de saludo
+- `factorial.chron` - Cálculo recursivo del factorial
+- `fib.chron` - Secuencia de Fibonacci
+- `class_sample.chron` - Demostración de clases y OOP
+
+**Ejemplos adicionales en el repositorio:**
+
+- `mi_programa.chron` - Programa complejo con múltiples características
+- `gestion_estudiantes.chron` - Sistema completo de gestión académica
 
 ### 4.1 Fibonacci (recursión)
 
@@ -309,6 +328,8 @@ Ubicación: carpeta `test/`.
 - `interpreter` tests: recursión, control de flujo, métodos, tipos.
 
 Ejecutar: `dart test`.
+
+### Estado actual: ✅ Todos los tests pasan (12/12 exitosos)
 
 Checklist para calificación:
 
